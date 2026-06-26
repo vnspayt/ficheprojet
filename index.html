@@ -191,6 +191,38 @@
     border-bottom:1px solid var(--accent);
   }
   .field textarea{resize:vertical;min-height:54px;font-family:"Helvetica Neue",Arial,sans-serif;font-size:0.85rem;}
+  #f-resume{min-height:90px;}
+  #f-description{min-height:260px;}
+  .hint{
+    text-transform:none;
+    letter-spacing:0;
+    color:var(--muted);
+    font-weight:normal;
+    font-size:0.68rem;
+  }
+  .page2{break-before:page;}
+  nav.fiche-tabs{
+    display:flex;
+    gap:6px;
+    margin-bottom:18px;
+  }
+  .fiche-tab-btn{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:0.78rem;
+    background:transparent;
+    border:1px solid var(--line);
+    border-radius:3px;
+    padding:7px 14px;
+    cursor:pointer;
+    color:var(--ink);
+  }
+  .fiche-tab-btn.active{
+    background:var(--ink);
+    color:var(--paper);
+    border-color:var(--ink);
+  }
+  .fiche-panel{display:none;}
+  .fiche-panel.active{display:block;}
 
   .toggle{display:flex;gap:6px;}
   .toggle button{
@@ -282,39 +314,56 @@
     padding-top:10px;
   }
   @media print{
-    @page{ size: A4; margin: 9mm; }
-    body{font-size:8.5px;}
+    @page{ size: A4; margin: 7mm; }
+    *{box-shadow:none !important;}
+    body{font-size:7.5px;}
     .wrap{max-width:100%;padding:0;}
     .footer-actions, .disclaimer, .photo-controls{display:none;}
-    header{margin-bottom:8px;padding-bottom:6px;}
-    .brand img{width:60px;}
-    .title-input{font-size:1rem;width:auto;}
-    .subtitle-input{font-size:0.55rem;width:auto;}
-    .photo-zone{margin-bottom:8px;}
-    .photo-preview{border:none;max-height:130px;min-height:auto;}
+    nav.fiche-tabs{display:none;}
+    .fiche-panel{display:block !important;}
+    header{margin-bottom:5px;padding-bottom:4px;}
+    .brand{gap:8px;}
+    .brand img{width:42px;}
+    .title-input{font-size:0.85rem;width:auto;padding:0;margin:0;}
+    .subtitle-input{font-size:0.5rem;width:auto;padding:0;}
+    .photo-zone{margin-bottom:5px;}
+    .photo-preview{border:none;max-height:70px;min-height:auto;}
     .card{
       -webkit-print-color-adjust:exact;print-color-adjust:exact;
-      padding:6px 8px 8px;
-      margin-bottom:6px;
-      border-radius:3px;
+      padding:3px 6px 4px 8px;
+      margin-bottom:3px;
+      border-radius:2px;
+      border-left-width:2px;
       break-inside:avoid;
     }
-    .group-title{font-size:0.6rem;margin-bottom:4px;}
-    .subgroup-title{font-size:0.52rem;margin:8px 0 5px;padding:1px 6px;}
-    .field-grid{gap:4px 14px;}
-    .permit-row{gap:4px 14px;margin-bottom:4px;}
-    .field{gap:1px;}
-    .field label{font-size:0.55rem;}
-    .field input, .field textarea, .field select{font-size:0.72rem;padding:1px 2px;}
-    .field textarea{min-height:28px;font-size:0.65rem;}
-    .toggle button{font-size:0.58rem;padding:2px 0;}
-    .programme-tag{font-size:0.55rem;padding:1px 7px;}
-    .timeline-wrap{margin:14px 0 8px;}
-    .timeline-track{margin:26px 14px 26px;}
-    .milestone-label{font-size:0.52rem;width:70px;}
-    .milestone-label.top{top:-26px;}
-    .milestone-label.bottom{bottom:-24px;}
-    .milestone{width:8px;height:8px;border-width:2px;}
+    .group-title{font-size:0.52rem;margin-bottom:2px;}
+    .subgroup-title{font-size:0.46rem;margin:4px 0 2px;padding:0px 5px;}
+    .field-grid{
+      display:grid;
+      grid-template-columns:repeat(3, 1fr) !important;
+      gap:1px 10px;
+    }
+    .field-grid.full{grid-template-columns:1fr !important;}
+    .permit-row{grid-template-columns:repeat(3,1fr);gap:1px 10px;margin-bottom:1px;}
+    .field{gap:0;}
+    .field label{font-size:0.46rem;}
+    .field input, .field textarea, .field select{font-size:0.62rem;padding:0 1px;border-bottom-width:1px;}
+    .field textarea{min-height:14px;font-size:0.55rem;}
+    .toggle{gap:3px;}
+    .toggle button{font-size:0.48rem;padding:0px 0;}
+    .programme-tag{font-size:0.46rem;padding:0px 5px;margin-top:1px;}
+    .timeline-wrap{margin:6px 0 2px;}
+    .timeline-track{margin:14px 10px 14px;height:3px;}
+    .milestone-label{font-size:0.42rem;width:48px;line-height:1.1;}
+    .milestone-label .date{font-size:0.4rem;}
+    .milestone-label.top{top:-13px;}
+    .milestone-label.bottom{bottom:-12px;}
+    .milestone{width:5px;height:5px;border-width:1px;}
+    .page2{break-before:page;}
+    #f-resume{min-height:60px;font-size:0.85rem;}
+    #f-description{min-height:200px;font-size:0.8rem;}
+    .page2 .field input, .page2 .field textarea, .card.tint-4 .field textarea{font-size:0.8rem;}
+    .hint{font-size:0.5rem;}
   }
 </style>
 </head>
@@ -329,6 +378,13 @@
       </div>
     </div>
   </header>
+
+  <nav class="fiche-tabs">
+    <button class="fiche-tab-btn active" id="tabbtn-ficheinfo" onclick="showFicheTab('ficheinfo')">Fiche projet</button>
+    <button class="fiche-tab-btn" id="tabbtn-resume" onclick="showFicheTab('resume')">Résumé & description</button>
+  </nav>
+
+  <div class="fiche-panel active" id="panel-ficheinfo">
 
   <div class="photo-zone">
     <div class="photo-preview" id="photoPreview">
@@ -482,6 +538,26 @@
   </div>
   </section>
 
+  </div>
+
+  <div class="fiche-panel" id="panel-resume">
+
+  <section class="card tint-1 page2">
+  <div class="group-title">Résumé du projet <span class="hint">(4-5 lignes max.)</span></div>
+  <div class="field-grid full">
+    <div class="field"><textarea id="f-resume" rows="5" oninput="limitLines(this,5)" placeholder="Résumé synthétique du projet en quelques lignes : nature, programme, localisation, enjeux principaux..."></textarea></div>
+  </div>
+  </section>
+
+  <section class="card tint-4">
+  <div class="group-title">Description complète de l'opération</div>
+  <div class="field-grid full">
+    <div class="field"><textarea id="f-description" rows="14" placeholder="Description détaillée du projet : contexte, parti architectural, programme, contraintes du site, démarche environnementale, calendrier, particularités..."></textarea></div>
+  </div>
+  </section>
+
+  </div>
+
   <div class="footer-actions">
     <button onclick="resetAll()">Réinitialiser</button>
     <button onclick="window.print()">Imprimer / Export PDF</button>
@@ -492,6 +568,22 @@
 </div>
 
 <script>
+function showFicheTab(id){
+  document.querySelectorAll('.fiche-panel').forEach(p=>{
+    p.classList.toggle('active', p.id === 'panel-'+id);
+  });
+  document.querySelectorAll('.fiche-tab-btn').forEach(b=>{
+    b.classList.toggle('active', b.id === 'tabbtn-'+id);
+  });
+}
+
+function limitLines(el, max){
+  const lines = el.value.split('\n');
+  if(lines.length > max){
+    el.value = lines.slice(0, max).join('\n');
+  }
+}
+
 function loadPhoto(e){
   const file = e.target.files[0];
   if(!file) return;
@@ -607,6 +699,7 @@ function resetAll(){
   removePhoto();
   updateProgrammeColor();
   document.querySelectorAll('.toggle button').forEach(b=>b.classList.remove('active','yes'));
+  showFicheTab('ficheinfo');
   updateTimeline();
 }
 
